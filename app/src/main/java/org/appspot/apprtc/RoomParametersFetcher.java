@@ -125,20 +125,21 @@ public class RoomParametersFetcher {
       Log.d(TAG, "WSS url: " + wssUrl);
       Log.d(TAG, "WSS POST url: " + wssPostUrl);
 
-      List<PeerConnection.IceServer> iceServers =
-          iceServersFromPCConfigJSON(roomJson.getString("pc_config"));
-      boolean isTurnPresent = false;
-      for (PeerConnection.IceServer server : iceServers) {
-        Log.d(TAG, "IceServer: " + server);
-        for (String uri : server.urls) {
-          if (uri.startsWith("turn:")) {
-            isTurnPresent = true;
-            break;
-          }
-        }
-      }
+//       List<PeerConnection.IceServer> iceServers =
+//           iceServersFromPCConfigJSON(roomJson.getString("pc_config"));
+//       boolean isTurnPresent = false;
+//       for (PeerConnection.IceServer server : iceServers) {
+//         Log.d(TAG, "IceServer: " + server);
+//         for (String uri : server.urls) {
+//           if (uri.startsWith("turn:")) {
+//             isTurnPresent = true;
+//             break;
+//           }
+//         }
+//       }
       // Request TURN servers.
-      if (!isTurnPresent && !roomJson.optString("ice_server_url").isEmpty()) {
+      List<PeerConnection.IceServer> iceServers = new ArrayList<>();
+      if (!roomJson.optString("ice_server_url").isEmpty()) {
         List<PeerConnection.IceServer> turnServers =
             requestTurnServers(roomJson.getString("ice_server_url"));
         for (PeerConnection.IceServer turnServer : turnServers) {
